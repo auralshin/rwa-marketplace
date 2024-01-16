@@ -1,0 +1,7 @@
+aave-v3-core/=lib/aave-v3-core/
+aave-v3-periphery/=lib/aave-address-book/lib/aave-v3-periphery/
+ds-test/=lib/forge-std/lib/ds-test/src/
+forge-std/=lib/forge-std/src/
+gho-core/=lib/gho-core/
+@openzeppelin/=lib/openzeppelin-contracts/
+
