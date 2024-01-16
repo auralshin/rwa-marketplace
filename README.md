@@ -55,9 +55,9 @@ The Bancor curve adjusts prices dynamically, ensuring liquidity and fair pricing
 This further creates a very good utility for underlying Truffles Token
 
 Price Dynamics: For instance, if a user wants to tokenize a housing unit worth $100K, and deposits $10K as initial liquidity, the reserve ratio is set at 10%. The price of these fractionalized tokens will then vary based on the Bancor Formula, which uses this reserve ratio and the total supply of tokens to determine their value. The Bancor Formula ensures a balanced and dynamic pricing mechanism, adjusting according to market demand and supply. It's an efficient way to create a liquid market for fractionalized real estate assets, making investment opportunities more accessible to a wider audience.
-![Untitled (6)](https://github.com/auralshin/rwa-marketplace/assets/41705919/69a7b509-3ddf-40a8-a7e6-463d341284b7)
+![Untitled (6)](https://github.com/auralshin/rwa-marketplace/assets/41705919/aa873a8c-b09e-4075-8d69-6d0772799f94)
 
-![Untitled (7)](https://github.com/auralshin/rwa-marketplace/assets/41705919/d2a31ab2-010f-4abb-bf59-aa3d339339bc)
+![Untitled (7)](https://github.com/auralshin/rwa-marketplace/assets/41705919/fa5329d8-dcca-45c2-9e44-5a9ab3459084)
 
 
 ### **4.2 Revenue Streams**
@@ -90,4 +90,5 @@ The RWA Marketplace transforms the landscape of asset ownership and investment b
 - **Benefit for Traders and Investors**: Access to a new, diversified market with potentially lower entry costs and increased liquidity.
 
 ## 6. User Flow
-![Untitled (8)](https://github.com/auralshin/rwa-marketplace/assets/41705919/b291d74a-4c63-483c-a8e5-0677d79159d4)
+![Untitled (8)](https://github.com/auralshin/rwa-marketplace/assets/41705919/52c63b23-2529-4f0d-8081-3d46addf610d)
+
