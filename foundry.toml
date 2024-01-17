@@ -2,6 +2,9 @@
 src = "src"
 out = "out"
 libs = ["lib"]
+via_ir = true
+optimizer = true
+optimizer-runs = 10_000_000
 
 [rpc_endpoints]
 goerli = "https://eth-goerli.g.alchemy.com/v2/Z8s1BqykuzW9DcRji6-RaUiC-jdFXFf9"
