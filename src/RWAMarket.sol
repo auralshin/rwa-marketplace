@@ -40,7 +40,7 @@ contract RWAMarket is Ownable, ReentrancyGuard, BancorFormula {
     GhoToken gho = GhoToken(0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211);
     LiquidStakingToken public lstToken;
 
-    event MarketCreated(address indexed creator, uint256 amountMinted);
+    event MarketCreated(address indexed creator);
     event Deposited(address indexed depositor, uint256 amount);
     event Withdrawn(address indexed recipient, uint256 amount);
     event Bought(address indexed buyer, uint256 amount);
@@ -64,13 +64,11 @@ contract RWAMarket is Ownable, ReentrancyGuard, BancorFormula {
         reserveRatio = uint32(_reserveRatio);
         isMarketCreated = true;
 
-        emit MarketCreated(msg.sender, amountMinted);
+        emit MarketCreated(recipient);
     }
 
     function deposit(uint256 amount) public onlyOwner {
         require(amount > 0, "Must deposit at least 1 token");
-        require(amount <= gho.balanceOf(msg.sender), "Insufficient balance");
-        gho.transferFrom(msg.sender, address(this), amount);
         uint256 amountToMint = calculatePurchaseReturn(
             lstToken.totalSupply(),
             gho.balanceOf(address(this)),

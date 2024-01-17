@@ -8,6 +8,7 @@ import {AccessControl} from "aave-v3-core/contracts/dependencies/openzeppelin/co
 import {IPool} from "aave-v3-core/contracts/interfaces/IPool.sol";
 import {GhoToken} from "gho-core/src/contracts/gho/GhoToken.sol";
 import {IGhoToken} from "gho-core/src/contracts/gho/interfaces/IGhoToken.sol";
+import {Strings} from "aave-v3-core/contracts/dependencies/openzeppelin/contracts/Strings.sol";
 import {IERC721} from "./NFT/FlattenERC721.sol";
 import {IRWAAsset} from "./NFT/IRWAAsset.sol";
 import "./maths/Bancor.sol";
@@ -97,7 +98,7 @@ contract RWAVault is
         uint256 initialAmount = (market.price * (market.percentage) * 1e18) /
             100;
         createMarket(
-            "Liquid Staking Token " + string(market.tokenId),
+            string(abi.encodePacked("Liquid Staking Token ", Strings.toString(market.tokenId))),
             "LST",
             market.percentage,
             initialAmount,
