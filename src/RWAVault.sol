@@ -10,10 +10,9 @@ import {GhoToken} from "gho-core/src/contracts/gho/GhoToken.sol";
 import {IGhoToken} from "gho-core/src/contracts/gho/interfaces/IGhoToken.sol";
 import {Strings} from "aave-v3-core/contracts/dependencies/openzeppelin/contracts/Strings.sol";
 import {IERC721} from "./NFT/FlattenERC721.sol";
-import {IRWAAsset} from "./NFT/IRWAAsset.sol";
+import {LendingToken} from "./NFT/LendingToken.sol";
 import "./maths/Bancor.sol";
 import "./Oracle/Oracle.sol";
-import {LendingToken} from "./NFT/LendingToken.sol";
 import "./RWAMarket.sol";
 
 contract RWAVault is
@@ -27,7 +26,7 @@ contract RWAVault is
     bytes32 public constant MARKET_CREATOR_ROLE =
         keccak256("MARKET_CREATOR_ROLE");
 
-    struct Market {
+    struct MarketProposal {
         uint256 tokenId;
         uint256 price;
         uint256 percentage;
@@ -40,13 +39,13 @@ contract RWAVault is
     event MarketCreated(address indexed creator, address marketAddress);
 
     mapping(address => uint256) public balances;
-    mapping(uint256 => Market) public markets;
+    mapping(uint256 => MarketProposal) public markets;
     IERC721 public tradingToken;
     IERC20 dai = IERC20(0xD77b79BE3e85351fF0cbe78f1B58cf8d1064047C);
     IPool pool = IPool(0x617Cf26407193E32a771264fB5e9b8f09715CdfB);
     GhoToken gho = GhoToken(0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211);
-    IRWAAsset rwa = IRWAAsset(0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211);
-    event MarketCreated(
+    LendingToken rwa = LendingToken(0x225Bb092c06213CB6b2A16ef5DaD5B4Ae56f58b3);
+    event MarketProposalCreated(
         uint256 tokenId,
         uint256 price,
         uint256 percentage,
@@ -62,11 +61,11 @@ contract RWAVault is
 
     function proposeMarketCreation(uint256 tokenId) public payable {
         require(tokenId != 0, "Token does not exist");
-        IRWAAsset.RWADetails memory details = rwa.getTokenDetails(tokenId);
+        LendingToken.RWADetails memory details = rwa.getDetails(tokenId);
         uint256 price = stringToUint(details._rwaAmount);
         uint256 percentage = getPercentage(tokenId);
         rwa.transferFrom(msg.sender, address(this), tokenId);
-        Market memory market = Market({
+        MarketProposal memory market = MarketProposal({
             tokenId: tokenId,
             price: price,
             percentage: percentage,
@@ -74,13 +73,13 @@ contract RWAVault is
             buyer: address(this),
             isApproved: false
         });
-        emit MarketCreated(tokenId, price, percentage, msg.sender);
+        emit MarketProposalCreated(tokenId, price, percentage, msg.sender);
     }
 
     function approveMarketCreation(
         uint256 tokenId
     ) public onlyRole(MARKET_CREATOR_ROLE) {
-        Market storage market = markets[tokenId];
+        MarketProposal storage market = markets[tokenId];
 
         // Check if the market exists for the token
         require(market.tokenId != 0, "Market does not exist");
@@ -98,7 +97,12 @@ contract RWAVault is
         uint256 initialAmount = (market.price * (market.percentage) * 1e18) /
             100;
         createMarket(
-            string(abi.encodePacked("Liquid Staking Token ", Strings.toString(market.tokenId))),
+            string(
+                abi.encodePacked(
+                    "Liquid Staking Token ",
+                    Strings.toString(market.tokenId)
+                )
+            ),
             "LST",
             market.percentage,
             initialAmount,

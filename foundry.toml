@@ -7,7 +7,7 @@ optimizer = true
 optimizer-runs = 10_000_000
 
 [rpc_endpoints]
-goerli = "https://eth-goerli.g.alchemy.com/v2/Z8s1BqykuzW9DcRji6-RaUiC-jdFXFf9"
+goerli = "https://goerli.gateway.tenderly.co"
 sepolia = "https://eth-sepolia.g.alchemy.com/v2/2emrSzLt95_z1mVvjm4WYtM4LZLYFq9M"
 
 # See more config options https://github.com/foundry-rs/foundry/tree/master/config

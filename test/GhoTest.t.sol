@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.13;
+pragma solidity ^0.8.10;
 
 import "forge-std/Test.sol";
 import "forge-std/StdCheats.sol";
@@ -7,18 +7,22 @@ import {IERC20} from "aave-v3-core/contracts/dependencies/openzeppelin/contracts
 import {IPool} from "aave-v3-core/contracts/interfaces/IPool.sol";
 import {GhoToken} from "gho-core/src/contracts/gho/GhoToken.sol";
 import {IGhoToken} from "gho-core/src/contracts/gho/interfaces/IGhoToken.sol";
+import {LendingToken} from "../src/NFT/LendingToken.sol";
 
 contract GhoTest is StdCheats, Test {
     IERC20 dai = IERC20(0xD77b79BE3e85351fF0cbe78f1B58cf8d1064047C);
     IPool pool = IPool(0x617Cf26407193E32a771264fB5e9b8f09715CdfB);
     GhoToken gho = GhoToken(0xcbE9771eD31e761b744D3cB9eF78A1f32DD99211);
-
+    LendingToken rwa = LendingToken(0x225Bb092c06213CB6b2A16ef5DaD5B4Ae56f58b3);
     address WE = address(0x1);
 
     function setUp() public {
-        vm.createSelectFork(vm.rpcUrl("goerli"), 8818553);
+        // vm.createSelectFork(vm.rpcUrl("goerli"), 8818553);
+        vm.createSelectFork(vm.rpcUrl("goerli"), 10388498);
         // Top up our account with 100 DAI
         deal(address(dai), WE, 100e18);
+        // Top up our account with 10 ETH
+        deal(address(0), WE, 10e18);
         // Take control of GHO token
         address owner = gho.owner();
         vm.prank(owner);
@@ -63,5 +67,24 @@ contract GhoTest is StdCheats, Test {
         gho.mint(FRIEND, 10e18);
         assertEq(gho.balanceOf(WE), 0);
         assertEq(gho.balanceOf(FRIEND), 10e18);
+    }
+
+    function testMintRWANFT() public {
+       uint256 tokenId = 1; // Example token ID
+        address user = address(0x1234);
+        LendingToken.RWADetails memory params = LendingToken.RWADetails({
+                _merkleRoot: bytes32(0), // Example merkle root
+                _rwaAmount: "1000", // Example RWA amount
+                _agreementDate: "2021-01-01", // Example date
+                _rwaCurrency: "USD" // Example currency
+            });
+
+        // Mint RWA NFT
+
+        
+   
+        rwa.safeMint(user, params);
+     
+        assertEq(rwa.ownerOf(tokenId), user, "Token owner should be testUser");
     }
 }
